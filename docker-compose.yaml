@@ -1,0 +1,80 @@
+version: '3.8'
+
+services:
+  redis:
+    image: redis:6.2-alpine
+    container_name: redis
+    ports:
+      - "${PORT_REDIS}:${PORT_REDIS}"
+    volumes:
+      - redis_data:/data
+
+  db:
+    image: postgres:13-alpine
+    container_name: postgres
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASS}
+    ports:
+      - "${PORT_DB}:${PORT_DB}"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - offer_network
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME}" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  web:
+    build: .
+    container_name: web
+    command: gunicorn --bind 0.0.0.0:${PORT_WEB} hh_analysis.wsgi:application
+    volumes:
+      - .:/app
+    ports:
+      - "${PORT_WEB}:${PORT_WEB}"
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_started    
+    environment:
+      - CELERY_BROKER_URL=redis://redis:${PORT_REDIS}/0
+      - CELERY_RESULT_BACKEND=redis://redis:${PORT_REDIS}/0
+      - DATABASE_URL=postgres://${DB_USER}:${DB_PASS}@db:${PORT_DB}/${DB_NAME}
+      - SECRET_KEY=${SECRET_KEY}
+      - POSTGRES_DB=${DB_NAME}
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASS}
+      - POSTGRES_HOST=db
+      - PORT_DB=${PORT_DB}
+
+  celery:
+    build: .
+    container_name: celery
+    command: celery -A hh_analysis worker --loglevel=info
+    volumes:
+      - .:/app
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_started    
+    environment:
+      - CELERY_BROKER_URL=redis://redis:${PORT_REDIS}/0
+      - CELERY_RESULT_BACKEND=redis://redis:${PORT_REDIS}/0
+      - DATABASE_URL=postgres://${DB_USER}:${DB_PASS}@db:${PORT_DB}/${DB_NAME}
+
+      
+
+volumes:
+  redis_data:
+  postgres_data:
+
+networks:
+  offer_network:
+    driver: bridge
