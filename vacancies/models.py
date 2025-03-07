@@ -2,7 +2,7 @@ from django.db import models
 
 class Profession(models.Model):
     name = models.CharField(max_length=255, verbose_name="Название профессии")
-    search_query = models.CharField(max_length=255)
+    search_query = models.CharField(max_length=500)
 
     def __str__(self):
         return self.name

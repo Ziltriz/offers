@@ -6,6 +6,8 @@ services:
       - "${PORT_REDIS}:${PORT_REDIS}"
     volumes:
       - redis_data:/data
+    networks:
+      - offer_network
 
   db:
     image: postgres:13-alpine
@@ -30,9 +32,10 @@ services:
   web:
     build: .
     container_name: web
-    command: gunicorn --bind 0.0.0.0:${PORT_WEB} hh_analysis.wsgi:application
+    command: python manage.py runserver 0.0.0.0:${PORT_WEB}
     volumes:
       - .:/app
+      - ./static:/app/static 
     ports:
       - "${PORT_WEB}:${PORT_WEB}"
     depends_on:
@@ -66,6 +69,8 @@ services:
         condition: service_started  
       web:
         condition: service_started  
+    networks:
+      - offer_network
     environment:
       - CELERY_BROKER_URL=redis://redis:${PORT_REDIS}/0
       - CELERY_RESULT_BACKEND=redis://redis:${PORT_REDIS}/0

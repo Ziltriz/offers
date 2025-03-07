@@ -20,3 +20,11 @@ class SkillCountSerializer(serializers.Serializer):
 class VacancySkillCountSerializer(serializers.Serializer):
     title = serializers.CharField()
     skills = SkillCountSerializer(many=True)
+
+class SkillSerializer(serializers.Serializer):
+    name = serializers.CharField()
+    count = serializers.IntegerField()
+
+class ProfessionSkillsSerializer(serializers.Serializer):
+    profession = serializers.CharField()
+    skills = SkillSerializer(many=True)
