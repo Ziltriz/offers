@@ -1,17 +1,23 @@
 from django.db import models
 
 class Profession(models.Model):
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255, verbose_name="Название профессии")
     search_query = models.CharField(max_length=255)
 
     def __str__(self):
         return self.name
+    class Meta:
+        verbose_name = "Название професси"
+        verbose_name_plural = "Нахвание профессий"
 
 class VacancyKeyWords(models.Model):
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255, verbose_name="Ключевое слово")
 
     def __str__(self):
         return self.name
+    
+    class Meta:
+        verbose_name = "Ключевое слово"
 
 class Vacancy(models.Model):
     profession = models.ForeignKey(Profession, on_delete=models.CASCADE, related_name='vacancies')
@@ -23,3 +29,7 @@ class Vacancy(models.Model):
 
     def __str__(self):
         return self.title
+    
+    class Meta:
+        verbose_name="Вакансия"
+        verbose_name_plural = "Вакансии"
