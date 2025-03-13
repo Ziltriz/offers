@@ -1,8 +1,8 @@
 import requests
-from datetime import datetime
 from typing import List, Dict, Optional
 
 class HHClient:
+    
     BASE_URL = "https://api.hh.ru/vacancies"
 
     def __init__(self, user_agent: str = "MyApp/1.0 (my-app-feedback@example.com)"):
