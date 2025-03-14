@@ -52,36 +52,40 @@ DEBUG=True
 
 # Порт для Django
 PORT_WEB=8000
+```
+
+---
+
 
 ### 2.Зависимости
 
 Убедитесь, что у вас установлены все зависимости. Для этого выполните:
-
+```
 pip install -r requirements.txt
 
-
+```
 ### 3. Запуск через Docker
 
 
 ## 1. Сборка и запуск контейнеров
 
 # Соберите и запустите контейнеры:
-
+```
 docker-compose up --build
-
+```
 
 # Примените миграции:
-
+```
 docker-compose exec web python manage.py migrate
-
+```
 # Создайте суперпользователя (опционально):
-
+```
 docker-compose exec web python manage.py createsuperuser
-
+```
 # Соберите статические файлы:
-
+```
 docker-compose exec web python manage.py collectstatic --noinput
-
+```
 
 ### 4. Доступ к приложению
 
@@ -99,9 +103,9 @@ Django: http://localhost:8000
 ### 5. Запуск Celery
 
 ## Celery автоматически запускается вместе с контейнером celery. Если нужно запустить его вручную:
-
+```
 docker-compose exec celery celery -A hh_analysis worker --loglevel=info
-
+```
 
 ### 6. Структура проекта
 
@@ -157,7 +161,7 @@ GET /api/profession/1/skills/
 
 
 #Ответ:
-
+```
 json
 {
 "profession": "Python Developer",
@@ -169,7 +173,7 @@ json
 ]
 }
 
-
+```
 ### 7. Технологии
 
 Django: Основной фреймворк для создания REST API.
