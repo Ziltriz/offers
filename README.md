@@ -54,8 +54,6 @@ DEBUG=True
 PORT_WEB=8000
 ```
 
----
-
 
 ### 2.Зависимости
 
@@ -94,9 +92,10 @@ Django: http://localhost:8000
 
 ## API:
 
-# Получить список ключевых навыков для профессии: GET /api/profession/<profession_id>/skills/
-
-
+# Получить список ключевых навыков для профессии: 
+```
+GET /api/profession/<profession_id>/skills/
+```
 Пример: GET /api/profession/1/skills/ (для Python Developer)
 
 
@@ -108,7 +107,7 @@ docker-compose exec celery celery -A hh_analysis worker --loglevel=info
 ```
 
 ### 6. Структура проекта
-
+```
 hh_analysis/
 ├── hh_analysis/
 │   ├── __init__.py
@@ -136,16 +135,16 @@ hh_analysis/
 ├── requirements.txt
 └── README.md
 
-
+```
 ### Примеры запросов к API
 
 ## 1. Получить данные по вакансиям
 
 # Запрос:
 
-
+```
 GET /api/fetch_vacancies/<int:profession_id>/
-
+```
 
 # Описание:
 
@@ -156,9 +155,9 @@ GET /api/fetch_vacancies/<int:profession_id>/
 
 # Запрос:
 
-
+```
 GET /api/profession/1/skills/
-
+```
 
 #Ответ:
 ```
