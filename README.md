@@ -160,20 +160,20 @@ GET /api/profession/1/skills/
 
 json
 {
-    "profession": "Python Developer",
-    "skills": [
-        {"name": "Python", "count": 10},
-        {"name": "Django", "count": 8},
-        {"name": "Flask", "count": 5},
-        {"name": "SQL", "count": 3}
-    ]
+"profession": "Python Developer",
+"skills": [
+    {"name": "Python", "count": 10},
+    {"name": "Django", "count": 8},
+    {"name": "Flask", "count": 5},
+    {"name": "SQL", "count": 3}
+]
 }
 
 
 ### 7. Технологии
 
 Django: Основной фреймворк для создания REST API.
-Django Rest Framework (DRF): Для создания RESTful API.
+Django Rest Framework (DRF):     Для создания RESTful API.
 Celery: Для асинхронной обработки задач.
 Redis: Брокер сообщений для Celery.
 PostgreSQL: База данных для хранения вакансий и навыков.
